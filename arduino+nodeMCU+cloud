@@ -1,0 +1,115 @@
+#include <ESP8266WiFi.h>
+#include <ThingSpeak.h>
+
+WiFiClient client;
+WiFiServer server(80);
+#define trigPin  D0      // trig pin of HC-SR04
+#define trigPin2  D1
+#define trigPin3  D2
+#define echoPin  D3
+#define echoPin2 D4
+#define echoPin3  D5
+#define buzzer D7
+#define led D6
+
+long duration, distance;
+long duration2, distance2;
+long duration3, distance3;
+
+
+long myChannelNumber = 1602929;
+const char myWriteAPIKey[] = "EGU816VFQDFJJALW";
+
+void setup() {
+
+  Serial.begin(9600);
+  WiFi.begin("sundeep", "1234567890");
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(200);
+    Serial.print("..");
+  }
+  Serial.println();
+  Serial.println("NodeMCU is connected!");
+  Serial.println(WiFi.localIP());
+
+  ThingSpeak.begin(client);
+  pinMode(trigPin, OUTPUT);         // set trig pin as output
+  pinMode(echoPin, INPUT);          //set echo pin as input to capture reflected waves
+  pinMode(trigPin2, OUTPUT);         // set trig pin as output
+  pinMode(echoPin2, INPUT);          //set echo pin as input to capture reflected waves
+  pinMode(trigPin3, OUTPUT);         // set trig pin as output
+  pinMode(echoPin3, INPUT);          //set echo pin as input to capture reflected waves
+
+  pinMode(led, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);     // send waves for 10 us
+  delayMicroseconds(10);
+  duration = pulseIn(echoPin, HIGH); // receive reflected waves
+  distance = duration / 58.2;   // convert to distance
+  delay(10);
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin2, HIGH);     // send waves for 10 us
+  delayMicroseconds(10);
+  duration2 = pulseIn(echoPin2, HIGH); // receive reflected waves
+  distance2 = duration2 / 58.2;   // convert to distance
+  delay(10);
+  digitalWrite(trigPin3, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin3, HIGH);     // send waves for 10 us
+  delayMicroseconds(10);
+  duration3 = pulseIn(echoPin3, HIGH); // receive reflected waves
+  distance3 = duration3 / 58.2;   // convert to distance
+  delay(10);
+  //  Serial.println("distance: " + (String) distance);
+  //  Serial.println("distance2: " + (String) distance2);
+  //  Serial.println("distance3: " + (String) distance3);
+  //  ThingSpeak.writeField(myChannelNumber, 1, distance, myWriteAPIKey);
+  //  ThingSpeak.writeField(myChannelNumber, 2, distance2, myWriteAPIKey);
+  //  ThingSpeak.writeField(myChannelNumber, 3, distance3, myWriteAPIKey);
+  //  delay(2000);
+  if (distance <= 13)
+  {
+    digitalWrite(led, HIGH); //Stop
+    digitalWrite(buzzer, HIGH);
+
+
+  }
+
+  else if (distance2 <= 13)
+  {
+    digitalWrite(led, HIGH); //Stop
+    digitalWrite(buzzer, HIGH);
+
+
+  }
+
+  else if (distance3 <= 13)
+  {
+    digitalWrite(led, HIGH); //Stop
+    digitalWrite(buzzer, HIGH);
+
+
+  }
+  else {
+
+    digitalWrite(led, LOW); //Stop
+    digitalWrite(buzzer, LOW);
+  }
+
+  Serial.print("distance  (1)  ");
+  Serial.println(distance);
+
+  Serial.print("distance  (2)  ");
+  Serial.println(distance2);
+
+  Serial.print("distance  (3)  ");
+  Serial.println(distance3);
+
+}
