@@ -1,0 +1,35 @@
+#define trigPin  2
+#define echoPin  3
+#define led 5
+float distance;
+float duration;
+void setup()
+{
+
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(led, OUTPUT);
+}
+void loop()
+{
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);     // send waves for 10 us
+  delayMicroseconds(10);
+  duration = pulseIn(echoPin, HIGH); // receive reflected waves
+  distance = duration / 58.2;   // convert to distance
+  Serial.println(distance);
+  delay(10);
+  if (distance < 15)
+  {
+    digitalWrite(led, HIGH); //Stop
+    
+  }
+  else
+  {
+    digitalWrite(led, LOW); //Stop
+    
+  }
+  delay(1000);
+}
