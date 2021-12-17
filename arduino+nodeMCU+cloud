@@ -67,13 +67,13 @@ void loop() {
   duration3 = pulseIn(echoPin3, HIGH); // receive reflected waves
   distance3 = duration3 / 58.2;   // convert to distance
   delay(10);
-  //  Serial.println("distance: " + (String) distance);
-  //  Serial.println("distance2: " + (String) distance2);
-  //  Serial.println("distance3: " + (String) distance3);
-  //  ThingSpeak.writeField(myChannelNumber, 1, distance, myWriteAPIKey);
-  //  ThingSpeak.writeField(myChannelNumber, 2, distance2, myWriteAPIKey);
-  //  ThingSpeak.writeField(myChannelNumber, 3, distance3, myWriteAPIKey);
-  //  delay(2000);
+  Serial.println("distance: " + (String) distance);
+  Serial.println("distance2: " + (String) distance2);
+  Serial.println("distance3: " + (String) distance3);
+  ThingSpeak.writeField(myChannelNumber, 1, distance, myWriteAPIKey);
+  ThingSpeak.writeField(myChannelNumber, 2, distance2, myWriteAPIKey);
+  ThingSpeak.writeField(myChannelNumber, 3, distance3, myWriteAPIKey);
+  delay(2000);
   if (distance <= 13)
   {
     digitalWrite(led, HIGH); //Stop
